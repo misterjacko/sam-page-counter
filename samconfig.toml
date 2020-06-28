@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "visit-count"
+s3_bucket = "jakobondrey-visitor-count-lambda"
+s3_prefix = "visit-count"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
