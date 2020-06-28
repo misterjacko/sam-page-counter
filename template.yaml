@@ -10,18 +10,18 @@ Globals:
     Timeout: 60 
 
 Resources:
-  testAppFunction: # This needs to match the values in Outputs. Both the heading and !GetAtt .Arn
+  visitCountFunction: # This needs to match the values in Outputs. Both the heading and !GetAtt .Arn
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: MyFirstLambdaFunction # This name doesnt seem to matter much
-      CodeUri: test-app/ # This is the file path where your function file is located
-      Handler: test.lambda_handler # This is the function File.function
+      FunctionName: visitCountFunction # This name doesnt seem to matter much
+      CodeUri: app/ # This is the file path where your function file is located
+      Handler: app.get_update_visit_counter # This is the function File.function
       Runtime: python3.8 # This is the language that the file is written in
       Events:
         TestAppAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /testy # this is the path when you test the API locally
+            Path: /test # this is the path when you test the API locally
             Method: get
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
@@ -43,9 +43,9 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  TestAppAPI:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/test-app/" # this will be the url to access once on AWS. You can change the /Prod/test-app/ part
-  testAppFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt testAppFunction.Arn
+  CountAppAPI:
+    Description: "API Gateway endpoint URL for Visitor Count function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Production/visitCount/" # this will be the url to access once on AWS. You can change the /Prod/test-app/ part
+  visitCountFunction:
+    Description: "Visit Counter Function ARN"
+    Value: !GetAtt visitCountFunction.Arn

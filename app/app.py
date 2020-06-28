@@ -1,13 +1,17 @@
 import boto3
 import json
 
-ec2Client = boto3.client('ec2')
+client = boto3.client('dynamodb')
 
-def get_update_visit_counter(event, context):
-    pop1 = "Good "
-    pop2 = "Morning!"
-    string1 = pop1 + pop2
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"message": string1})
-    }
+def get_update_visit_counter(site_url):
+    response = client.update_item(
+        TableName='jakobondrey_visitor_count',
+        Key={
+            'site_url': {
+                'S': 'jakobondrey.com'
+            },
+        },
+        ReturnValues='UPDATED_NEW',
+        UpdateExpression='SET count = count + 1',
+    )
+    print(response)
