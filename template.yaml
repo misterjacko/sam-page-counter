@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+Serverless app that will recieve API call to initiate and fetch a number from 
+A DynamoDB table, update the number +1, and post new number to webpage.
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60 
+
+Resources:
+  testAppFunction: # This needs to match the values in Outputs. Both the heading and !GetAtt .Arn
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: MyFirstLambdaFunction # This name doesnt seem to matter much
+      CodeUri: test-app/ # This is the file path where your function file is located
+      Handler: test.lambda_handler # This is the function File.function
+      Runtime: python3.8 # This is the language that the file is written in
+      Events:
+        TestAppAPI:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /testy # this is the path when you test the API locally
+            Method: get
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: jakobondrey_visitor_count
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "site_url"
+          AttributeType: "S"
+        - AttributeName: "count"
+          AttributeType: "N"
+      KeySchema: 
+        - AttributeName: "site_url"
+          KeyType: "HASH"
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  TestAppAPI:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/test-app/" # this will be the url to access once on AWS. You can change the /Prod/test-app/ part
+  testAppFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt testAppFunction.Arn
