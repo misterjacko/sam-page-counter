@@ -22,7 +22,7 @@ Resources:
         TestAppAPI:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /test # this is the path when you test the API locally
+            Path: /Prod # this is the path when you test the API locally
             Method: get
   visitCountFunctionIAMRole:
     Type: AWS::IAM::Role

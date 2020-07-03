@@ -16,14 +16,14 @@ Resources:
         - visitCountFunctionIAMRole
         - Arn
       FunctionName: visitCountFunction
-      CodeUri: s3://jakobondrey-visitor-count-lambda/5b79433ee21012a98c03afd4d106ba4e
+      CodeUri: s3://jakobondrey-visitor-count-lambda/76e07787e122ef0f25a2187900c6e501
       Handler: app.get_update_visit_counter
       Runtime: python3.8
       Events:
         TestAppAPI:
           Type: Api
           Properties:
-            Path: /test
+            Path: /Prod
             Method: get
   visitCountFunctionIAMRole:
     Type: AWS::IAM::Role

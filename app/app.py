@@ -22,6 +22,7 @@ def get_update_visit_counter(event, context):
     visit_count = response["Attributes"]["visit_count"]["N"]
     return {
         "statusCode": 200,
-        "body": json.dumps({"Visit_Count": visit_count})
+        "headers": {'Access-Control-Allow-Origin': '*'},
+        "body": json.dumps({"Visit_Count": visit_count}) # to access this in front end http call to api gateway endpoint. 
     }
     
