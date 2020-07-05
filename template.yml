@@ -13,8 +13,18 @@ Resources:
   visitCountFunction: # This needs to match the values in Outputs. Both the heading and !GetAtt .Arn
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Role: !GetAtt visitCountFunctionIAMRole.Arn
-      FunctionName: visitCountFunction # This name doesnt seem to matter much
+      Environment: 
+        Variables:
+          TABLE_NAME: !Ref DynamoDBTable
+      #Role: !GetAtt visitCountFunctionIAMRole.Arn
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource:
+                - !GetAtt DynamoDBTable.Arn
       CodeUri: app/ # This is the file path where your function file is located
       Handler: app.get_update_visit_counter # This is the function File.function
       Runtime: python3.8 # This is the language that the file is written in
@@ -24,43 +34,9 @@ Resources:
           Properties:
             Path: /Prod # this is the path when you test the API locally
             Method: get
-  visitCountFunctionIAMRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Path: /
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Principal:
-              Service:
-                - lambda.amazonaws.com
-            Effect: Allow
-            Action:
-              - sts:AssumeRole
-      Policies:
-        - PolicyName: VisitorCountLambdaPolicy
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource:
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:\
-                          log-group:/aws/lambda/*"
-                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:\
-                          log-group:/aws/lambda/*:*"
-              - Effect: Allow
-                Action:
-                  - dynamodb:UpdateItem
-                Resource:
-                  - !GetAtt DynamoDBTable.Arn
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: jakobondrey_visitor_count
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: site_url

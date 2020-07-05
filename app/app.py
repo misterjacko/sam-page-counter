@@ -1,19 +1,20 @@
 import boto3
 import json
+import os
 
 client = boto3.client('dynamodb')
-
+TABLE_NAME = os.getenv("TABLE_NAME", "Fake_table")
 
 def get_update_visit_counter(event, context):
     response = client.update_item(
-        TableName='jakobondrey_visitor_count',
+        TableName=TABLE_NAME,
         Key={
             'site_url': {
                 'S': 'jakobondrey.com'
             }
         },
         ReturnValues='UPDATED_NEW',
-        UpdateExpression='SET visit_count = visit_count + :val',
+        UpdateExpression='ADD visit_count :val',
         ExpressionAttributeValues={
             ":val": {
                 "N": "1"
