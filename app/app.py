@@ -3,6 +3,7 @@ import json
 
 client = boto3.client('dynamodb')
 
+
 def get_update_visit_counter(event, context):
     response = client.update_item(
         TableName='jakobondrey_visitor_count',
@@ -23,6 +24,5 @@ def get_update_visit_counter(event, context):
     return {
         "statusCode": 200,
         "headers": {'Access-Control-Allow-Origin': '*'},
-        "body": json.dumps({"Visit_Count": visit_count}) # to access this in front end http call to api gateway endpoint. 
+        "body": json.dumps({"Visit_Count": visit_count})  # to access this in front end http call to api gateway endpoint.
     }
-    
