@@ -13,7 +13,7 @@ def get_update_visit_counter(event, context):
             }
         },
         ReturnValues='UPDATED_NEW',
-        UpdateExpression='SET visit_count = visit_count + :val',
+        UpdateExpression='ADD visit_count :val',
         ExpressionAttributeValues={
             ":val": {
                 "N": "1"
