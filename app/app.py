@@ -5,7 +5,7 @@ import os
 TABLE_NAME = os.getenv("TABLE_NAME", "Fake_table")
 SITE_URL = os.getenv("SITE_URL", "fake_site.com")
 
-client = none
+client = None
     
 class UpdateItem(object):  
     
@@ -28,7 +28,7 @@ class UpdateItem(object):
                 }
             }
         )
-        
+
         visit_count = response["Attributes"]["visit_count"]["N"]
         return {
             "statusCode": 200,
