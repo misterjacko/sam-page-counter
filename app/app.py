@@ -7,7 +7,7 @@ SITE_URL = os.getenv("SITE_URL", "fake_site.com")
 
 client = None
     
-class update_item(object):  
+class UpdateItem(object):  
     
     def __init__(self, client):
         self.client = client
