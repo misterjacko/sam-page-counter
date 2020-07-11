@@ -42,8 +42,8 @@ class DynamoTest(TestCase):
             TableName=TEST_TABLE_NAME
         )
 
-    @mock.patch('update_item.TABLE_NAME', TEST_TABLE_NAME)
-    @mock.patch('update_item.SITE_URL', TEST_SITE_URL)
+    @mock.patch('app.TABLE_NAME', TEST_TABLE_NAME)
+    @mock.patch('app.SITE_URL', TEST_SITE_URL)
     def test_update(self):
         test_obj = UpdateItem(client)
         response = test_obj.update_count()
@@ -53,8 +53,8 @@ class DynamoTest(TestCase):
         # assert incremented by 1
         self.assertEqual("1", body_response["Visit_Count"])
 
-    @mock.patch('update_item.TABLE_NAME', TEST_TABLE_NAME)
-    @mock.patch('update_item.SITE_URL', TEST_SITE_URL)
+    @mock.patch('app.TABLE_NAME', TEST_TABLE_NAME)
+    @mock.patch('app.SITE_URL', TEST_SITE_URL)
     def test_update_when_already_exists(self):
         test_obj = UpdateItem(client)
         response = test_obj.update_count()
