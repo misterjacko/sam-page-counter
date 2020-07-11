@@ -15,6 +15,9 @@ TEST_TABLE_NAME = "Fake_table"
 TEST_SITE_URL = "fake_site.com"
 
 class DynamoTest(TestCase):
+    def test_fail(self):
+        self.assertEqual("2", "1")
+    
     def setUp(self):
         # Create table
         client.create_table(
@@ -65,22 +68,8 @@ class DynamoTest(TestCase):
         body_response2 = json.loads(response2["body"])
         self.assertEqual("2", body_response2["Visit_Count"])
 
-    def test_fail(self):
-        self.assertEqual("2", "1")
-
-
-
-
-
-
-
 # response1 = get_update_visit_counter({}, {})
 # response2 = get_update_visit_counter({}, {})
-
-
-
-
-
 
 # def test_response():
 #     count1 = int(json.loads(response1["body"])["Visit_Count"])
