@@ -7,7 +7,7 @@ SITE_URL = os.getenv("SITE_URL", "fake_site.com")
 
 client = None
     
-class UpdateItem(object):  
+class update_item(object):  
     
     def __init__(self, client):
         self.client = client
@@ -40,5 +40,5 @@ def get_update_visit_counter(event, context):
     global client
     if not client:
         client = boto3.client('dynamodb')
-    obj = UpdateItem(client)
+    obj = update_item(client)
     obj.update_count()

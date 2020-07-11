@@ -2,7 +2,7 @@ import json
 import os
 import boto3
 
-from app import UpdateItem
+from app import update_item
 from unittest import TestCase, mock
 
 client = boto3.client(
@@ -45,7 +45,7 @@ class DynamoTest(TestCase):
     @mock.patch('update_item.TABLE_NAME', TEST_TABLE_NAME)
     @mock.patch('update_item.SITE_URL', TEST_SITE_URL)
     def test_update(self):
-        test_obj = UpdateItem(client)
+        test_obj = update_item(client)
         response = test_obj.update_count()
         body_response = json.loads(response["body"])
         # assert count was incremented by one
@@ -56,7 +56,7 @@ class DynamoTest(TestCase):
     @mock.patch('update_item.TABLE_NAME', TEST_TABLE_NAME)
     @mock.patch('update_item.SITE_URL', TEST_SITE_URL)
     def test_update_when_already_exists(self):
-        test_obj = UpdateItem(client)
+        test_obj = update_item(client)
         response = test_obj.update_count()
         body_response = json.loads(response["body"])
         # assert count was incremented by one
