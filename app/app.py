@@ -13,7 +13,7 @@ class UpdateItem(object):
         self.client = client
 
     def update_count(self):
-        response = client.update_item(
+        response = self.client.update_item(
             TableName=TABLE_NAME,
             Key={
                 'site_url': {
@@ -40,5 +40,5 @@ def get_update_visit_counter(event, context):
     global client
     if not client:
         client = boto3.client('dynamodb')
-    obj = update_item(client)
+    obj = UpdateItem(client)
     obj.update_count()

@@ -4,19 +4,19 @@ import boto3
 
 from app import UpdateItem
 from unittest import TestCase, mock
-
 client = boto3.client(
     "dynamodb", 
     endpoint_url="http://localhost:8000",
     aws_access_key_id="ACCKEY111",
-    aws_secret_access_key="SECKEY999")
+    aws_secret_access_key="SECKEY999",
+    region_name="us-east-1")
 
 TEST_TABLE_NAME = "Fake_table"
 TEST_SITE_URL = "fake_site.com"
 
 class DynamoTest(TestCase):
-    def test_fail(self):
-        self.assertEqual("2", "1")
+    # def test_fail(self):
+    #     self.assertEqual("2", "1")
     
     def setUp(self):
         # Create table
@@ -67,11 +67,3 @@ class DynamoTest(TestCase):
         response2 = test_obj.update_count()
         body_response2 = json.loads(response2["body"])
         self.assertEqual("2", body_response2["Visit_Count"])
-
-# response1 = get_update_visit_counter({}, {})
-# response2 = get_update_visit_counter({}, {})
-
-# def test_response():
-#     count1 = int(json.loads(response1["body"])["Visit_Count"])
-#     count2 = int(json.loads(response2["body"])["Visit_Count"])
-#     assert count2 - count1 == 1
